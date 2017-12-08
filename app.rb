@@ -1,7 +1,11 @@
 require "sinatra"
-require "sinatra/reloader" if development?
+require "sinatra/activerecord"
+
 require_relative "database"
 
-get "/" do
-  @database = DB
-end
+require "./models/article"
+require "./models/comment"
+
+enable :sessions
+
+set :database, {adapter: "sqlite3", database: "postapp"}
