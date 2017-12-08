@@ -1,0 +1,68 @@
+<!-- Post Content Column -->
+<div class="col-lg-8">
+
+  <!-- Title -->
+  <h1 class="mt-4 oink"><%= @article.title %></h1>
+
+  <!-- Author -->
+  <p class="lead">
+    <span class="oink">by</span>
+    <a href="#" class="oink">The Little Blob</a>
+  </p>
+
+  <hr>
+
+  <!-- Date/Time -->
+  <p><span class="oink">Posted on January 1, 2017 at 12:00 PM</span> <span class="pull-right"><% if @article.rating %><span class="oink"><%= @article.rating %></span> <i class="fa fa-heart" aria-hidden="true"></i><% end %> <span class="oink"><%= @article.comments.length %> Comments</span></span></p>
+
+  <hr>
+
+  <!-- Preview Image -->
+  <img class="img-fluid rounded" src="<%= @article.photo %>" alt="">
+
+  <hr>
+
+  <!-- Post Content -->
+  <p class="lead oink"><%= @article.content %></p>
+
+  <p class="oink"><%= @article.content %></p>
+
+  <p class="oink"><%= @article.content %></p>
+
+  <p class="oink"><%= @article.content %></p>
+
+  <p class="oink"><%= @article.content %></p>
+
+  <hr>
+  
+  <form method="POST" action="/article/<%= @article.id %>/vote">
+    <input type="hidden" name="_method" value="put" />
+    <button type="submit" class="btn btn-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+ <span class="oink">I Like</span></button>
+  </form>
+  <!-- Comments Form -->
+  <div class="card my-4">
+    <h5 class="card-header oink">Leave a Comment:</h5>
+    <div class="card-body">
+      <form method="POST" action="/article/<%= @article.id %>/comments">
+        <div class="form-group">
+          <textarea class="form-control" rows="3" name="content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary oink">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <% @article.comments.each do |comment| %>
+
+    <!-- Single Comment -->
+    <div class="media mb-4">
+      <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+      <div class="media-body">
+        <h5 class="mt-0 oink">No One <small>says</small></h5>
+        <span class="oink"><%= comment.content %></span>
+      </div>
+    </div>
+
+  <% end %>
+</div>

@@ -1,0 +1,36 @@
+<!-- Blog Column -->
+<div class="col-md-8">
+
+  <h1 class="my-4 oink">Posts
+    <small>My life</small>
+  </h1>
+
+  <% @articles.each do |article| %>
+
+    <!-- Blog Post -->
+    <div class="card mb-4">
+      <img class="card-img-top" src="<%= article.photo %>" alt="">
+      <div class="card-body">
+        <h2 class="card-title oink"><%= article.title %></h2>
+        <p class="card-text oink"><%= article.content %></p>
+        <a href="/article/<%= article.id %>" class="btn btn-primary oink">Read More &rarr;</a>
+      </div>
+      <div class="card-footer text-muted">
+        <span class="oink"> Posted on January 1, 2017 by</span>
+        <a href="#" class="oink">The Little Blob</a>, <% if article.rating %><span class=" oink"><%= article.rating %></span> <i class="fa fa-heart" aria-hidden="true"></i>, <% end %><span class="oink"><%= article.comments.length %> Comments</span>
+      </div>
+    </div>
+
+  <% end %>
+            
+  <!-- Pagination -->
+  <ul class="pagination justify-content-center mb-4">
+    <li class="page-item">
+      <a class="page-link oink" href="#">&larr; Olds</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link oink" href="#">News &rarr;</a>
+    </li>
+  </ul>
+
+</div>

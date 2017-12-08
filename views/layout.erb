@@ -1,13 +1,111 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Post App</title>
+    <title class="oink">Post App</title> 
     <meta charset="UTF-8">
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="/style.css">
   </head>
+
   <body>
-    <%= yield %>
+    <div id="page">
+      <%= erb :header %>
+
+      <!-- Page Content -->
+      <div class="container">
+
+        <div class="row">
+
+          <%= yield %>
+
+          <!-- Sidebar Widgets Column -->
+          <div class="col-md-4">
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+              <h5 class="card-header oink">Research</h5>
+              <div class="card-body">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary oink" type="button">Yeah !</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+              <h5 class="card-header oink">Categories</h5>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        <a href="#" class="oink">Movies</a>
+                      </li>
+                      <li>
+                        <a href="#" class="oink">Musics</a>
+                      </li>
+                      <li>
+                        <a href="#" class="oink">Video Games</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-lg-6">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        <a href="#" class="oink">Comics</a>
+                      </li>
+                      <li>
+                        <a href="#" class="oink">Ideas</a>
+                      </li>
+                      <li>
+                        <a href="#" class="oink">Shows</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+      <!-- /.container -->
+
+      <%= erb :footer %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <% if session[:oink] %> 
+      <script>
+        
+        var oinks = ["Oink", "Oinkoink", "Koink", "Oinko", "Koinko", "Koinkoink"];
+        
+        function getOink(){
+          return oinks[Math.floor(Math.random() * oinks.length)];
+        }
+
+        $(document).ready(function(){
+          $(".oink").each(function(i){
+
+            var texts = $(this).html().split(" ").map(function(x){
+              return x.replace(/[A-Za-z]+/g, getOink());
+            });
+            $(this).html(texts.join(" "));
+          });
+        });
+
+      </script>
+    <% end %>
   </body>
+
 </html>
