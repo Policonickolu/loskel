@@ -3,7 +3,9 @@ Programmation Générale
 1. Ecrire une regexp qui détecterait les nombres hexadécimaux dans un text
 ‘0x0f4’, ‘0acdadecf822eeff32aca5830e438cb54aa722e3’, ‘8BADF00D’ devraient tous être détectés
 
->
+> /(0x|#|&H)?[0-9A-F]+(H)?/gi
+
+=> Prend en compte les préfixes 0x, # et &H et le suffixe H.
 
 2. Ci-dessous le pseudo-code d'une fonction récursive
 -  f(0) = 1;
@@ -12,6 +14,25 @@ Programmation Générale
 Implémentez la fonction f sans qu'elle soit récursive
 
 >
+__________________________________
+
+def f(n)
+
+  prev_res = 0
+  res = 1
+
+  (0..n-1).each do
+
+    a = 3 * res - prev_res
+    prev_res = res
+    res = a
+
+  end
+
+  return res
+
+end
+_________________________________
 
 Ruby on Rails
 
@@ -19,9 +40,13 @@ Ruby on Rails
 
 >
 
+- Programmer des tests qui vérifient qu'un refactoring ne modifiera pas le comportement
+- Remplacer les dépendances par le code des méthodes appelées
+- Revérifier les tests
+
 2. Qu'est-ce que le N+1 et comment l'éviter en Rails?
 
->
+> Quand on souhaite récupérer une ressource en base de données et que cette dernière possède une association avec une autre ressource, elle est également récupérée. Le N+1 est la situation lorsque cette ressource associée est récupérée par des requêtes séparées. Pour 1 requête retournant N élements d'une ressource, il y aura également N requêtes supplémentaires pour récupérer les éléments de la ressource associée. Pour éviter cela, il est préférable de faire une jointure des tables des 2 ressources associées et de récupérer le tout en une seule requête. (utiliser la méthode .includes(:attribut)).
 
 3. D'un point de vue pratique, quel intérêt à utiliser des constantes dans une app Rails? Quelles implémentations avez-vous vu/mis en place?
 
@@ -29,7 +54,7 @@ Ruby on Rails
 
 4. Décrivez une fonction de Ruby trop peu utilisée à votre goût
 
->
+> Quand on récupère des données spécifiques en base comme les auteurs des livres de la catégorie science-fiction, on peut être amené à se retrouver avec des tableaux imbriqués site à l'utilisation de .map (sf.map( livres.map ( auteurs) ). Il existe une variante flat_map qui permet de rassembler les données en un unique tableau.
 
 Architecture
 
@@ -40,8 +65,70 @@ La base de données est en PostgreSQL.
 Proposez une structure de données et une implémentation en back-end qui permettrait d'être assez flexible
 tout en réduisant la possibilité de bugs et de structures non conformes
 
->
+> On utilise le polymorphisme pour lier toutes les tables qui peuvent être des objets d'une notification (utilisteurs, projets, groupes, etc.), on les qualifie de "Notifiables" (interface). ObjetNotif est donc un objet d'une notification. Une notification a donc plusieurs objets ordonnés (<< objet1 a aimé le projet objet2 de objet3 >>), chaque objet étant rattaché à un Notifiable, donc un utilisteur ou un projet, etc.
+
+
+class Notification {
+  
+  Date date
+  String type
+
+  hasmany ObjetNotif
+
+}
+
+class ObjetNotif {
+
+  int order 
+  string notifiable_type
+
+  belongs_to Notification
+  belongs_to Notifiable
+
+}
+
+class User {
+
+  hasmany ObjetNotif as Notifiable
+  ...
+
+}
+
+class Project {
+
+  hasmany ObjetNotif as Notifiable
+  ...
+
+}
 
 2. Décrivez les objets et la structure de donnée que vous utiliseriez pour implémenter un jeu de Touché-Coulé
 
 >
+
+class ToucheCoule {
+  
+  Camp joueur1
+  Camp joueur2
+
+}
+
+class Camp {
+  
+  Array zoneNavale
+
+}
+
+classe Vaisseau {
+  String type
+  String position
+  int length
+  boolean vertical
+}
+
+Dans chaque camp, nous avons une liste de vaisseaux et une zone navale en tableau à 2 dimensions. Des références des objets vaisseaux sont placées dans le tableau aux indices correspondants aux positions occupées (Vaisseau X de taille 3 occupe les positions A3 (0,2), A4 (0,3) et A5 (0,4)). Nil ou false si la case n'est pas occupée.
+
+Quand une position est attaquée, on sait quel vaisseau est touché ou pas et la case est vidée. Si un vaisseau n'a plus aucune référence dans le tableau de la zone navale, il est donc détruit.
+
+La classe Vaisseau est principalement pour initialiser un vaisseau et pour pouvoir le placer correctement dans la zone navale (et aussi pour un souci de rendu si on veut afficher la zone navale à l'écran).
+
+Cela suffit pour une partie de TouchéCoulé, mais on peut aussi ajouter des éléments comme des couleurs de joueurs, noms de joueurs.
